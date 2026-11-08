@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="black">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hannan & Madiha - Eternal Love & Memories</title>
+    <!-- DaisyUI & Tailwind CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Jameel+Noori+Nastaleeq&family=Poppins:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;1,400;1,600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #000000;
+            color: #ffffff;
+        }
+        .urdu-font {
+            font-family: 'Jameel Noori Nastaleeq', serif;
+        }
+        .cinzel-font {
+            font-family: 'Cinzel', serif;
+        }
+    </style>
+</head>
+<body class="min-h-screen relative overflow-x-hidden bg-black text-white">
+
+    <!-- ENTRY CURTAIN & LOCK SCREEN OVERLAY -->
+    <div id="entryOverlay" class="fixed inset-0 z-50 flex flex-col justify-center items-center bg-black/95 p-4 backdrop-blur-md transition-opacity duration-1000">
+        <div class="card bg-[#0a0a0a] border-2 border-neutral-700 shadow-2xl max-w-md w-full p-8 text-center" id="curtainBox">
+            <h2 class="cinzel-font text-3xl text-white mb-2 italic">Welcome in my world ✨</h2>
+            <p class="font-serif italic text-gray-400 mb-6">Locked. Please enter code to unlock 🔐</p>
+            <input type="password" id="passcode" class="input input-bordered w-full bg-black text-center text-lg mb-4 text-white tracking-widest border-neutral-700" placeholder="Enter Secret Code...">
+            <button class="btn bg-white text-black font-semibold rounded-full hover:bg-gray-200 transition-transform w-full shadow-lg" onclick="checkPasscode()">Unlock 🖤</button>
+            <div id="errorMsg" class="text-error font-serif italic text-sm mt-3 hidden">Incorrect code! Try guessing again 💕</div>
+        </div>
+        <div id="successGreeting" class="cinzel-font text-3xl text-white text-center italic hidden animate-fade">
+            Code Deactivated!<br>Madiha Most Welcome 🌟🖤
+        </div>
+    </div>
+
+    <!-- Falling Black Petals / Stars Animation Container -->
+    <div id="fallingPetals" class="fixed inset-0 pointer-events-none z-10 overflow-hidden"></div>
+
+    <!-- Background Audio -->
+    <audio id="bgAudio" loop>
+        <source src="ssstik.io_1794161786132.mp3" type="audio/mp3">
+    </audio>
+
+    <!-- Top Floating Controls -->
+    <div class="fixed top-5 right-5 z-40 flex gap-2">
+        <button class="btn btn-sm btn-outline border-neutral-700 text-white bg-black/80 backdrop-blur" onclick="toggleMusic()">
+            🎵 <span id="musicStatus">Pause Melody</span>
+        </button>
+        <button class="btn btn-sm btn-outline border-neutral-700 text-white bg-black/80 backdrop-blur" onclick="toggleLanguage()">
+            🌐 <span id="langStatus">اردو / English</span>
+        </button>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 py-12 relative z-20">
+        <!-- Header with Madiha's Logo -->
+        <header class="text-center py-8">
+            <div class="w-56 h-56 mx-auto mb-6 rounded-full overflow-hidden border-4 border-neutral-800 shadow-[0_0_35px_rgba(255,255,255,0.1)] animate-pulse">
+                <img src="pic1.jpeg" alt="Madiha Logo" class="w-full h-full object-cover" onerror="this.src='https://via.placeholder.com/220?text=Madiha'">
+            </div>
+            <h1 class="cinzel-font text-4xl md:text-5xl text-white mb-2 italic drop-shadow-md">I Love Madiha Forever 😭🖤</h1>
+            <p class="font-serif italic text-gray-400 text-lg">Shayad main hi bura tha... jo sab kuch haar gaya. ✨🥀</p>
+        </header>
+
+        <!-- MYSTERY GIFT #1 -->
+        <div class="card bg-[#0a0a0a] border-2 border-dashed border-neutral-800 p-8 text-center cursor-pointer hover:border-solid hover:shadow-[0_0_25px_rgba(255,255,255,0.1)] transition-all mb-10" id="gift1Wrapper" onclick="unlockGift(1)">
+            <div class="text-6xl mb-4 animate-bounce" id="gift1Icon">🎁</div>
+            <div class="cinzel-font text-xl text-white mb-4 italic" id="gift1Title">Mystery Gift #1 (Click to Open)</div>
+            <button class="btn bg-white text-black font-semibold rounded-full px-8 hover:bg-gray-200" id="gift1Btn">Open Gift ✨</button>
+            <div class="hidden mt-4" id="gift1Content">
+                <img src="pic1.jpeg" alt="Madiha Special" class="w-full max-h-[500px] object-contain rounded-xl border-2 border-neutral-800 bg-black" onerror="this.src='https://via.placeholder.com/500?text=Madiha'">
+                <p class="mt-4 font-serif italic text-gray-300">Tum meri zindagi ka sab se khoobsurat aur dard bhara hissa ho... 🖤😭</p>
+            </div>
+        </div>
+
+        <!-- SPECIAL EMOTIONAL NOTE & REALITY CHECK -->
+        <div class="card bg-[#0a0a0a] border-2 border-neutral-800 p-8 mb-10 shadow-2xl backdrop-blur">
+            <h2 class="cinzel-font text-2xl text-white mb-4 text-center italic">Ek Yaad... Ek Ehsas 💔😭</h2>
+            <p class="font-serif italic text-gray-300 text-center leading-relaxed text-lg space-y-4">
+                "Ek waqt tha jab har mushkil mein, har mod par, aur har wqt sirf yahi kaha tha — <span class='text-white font-bold'>'Tum meri khair ho, main kabhi tumhara sath nahi chhodunga.'</span> Shayad galti meri hi thi, shayad main hi bura tha jo uski ummeedon par poora nahi utar saka... lekin pyar sachha tha. 🖤🥀"<br><br>
+                "کچھ رشتے کاغذ کی اس کشتی کی طرح ہوتے ہیں جو طوفان آنے پر ڈوب نہیں جاتے، بلکہ خود کو ہار مان کر پانی میں تحلیل ہو جاتے ہیں۔ جب اپنوں کے ہاتھ سے بنے ہوئے خواب ایک ایک کر کے ٹوٹتے ہیں، تو انسان اندر سے اس طرح اجڑ جاتا ہے جیسے ویران سڑک پر کوئی چراغ اکیلا جلتا جلتا بجھ جائے۔ 😭🕊️"
+            </p>
+        </div>
+
+        <!-- Paragraphs Section -->
+        <div class="card bg-[#0a0a0a] border border-neutral-800 p-8 mb-10 shadow-xl backdrop-blur">
+            <h2 class="cinzel-font text-2xl text-white mb-6 text-center italic">Our Eternal Bond 🖤</h2>
+            
+            <div class="lang-content eng-version space-y-4 font-serif italic text-center text-lg leading-relaxed text-gray-300">
+                <p>
+                    From the very first moment our paths crossed, my entire world changed into something truly deep and unforgettable ✨🖤<br>
+                    You were my peace, and perhaps my flaws ruined everything 😭🖤
+                </p>
+            </div>
+
+            <div class="lang-content urdu-version urdu-font text-2xl text-center text-gray-200 leading-loose hidden space-y-4">
+                <p>
+                    جب سے ہمارے راستے ملے ہیں، میری پوری دنیا ایک گہری یاد بن گئی ہے ✨🖤<br>
+                    شاید میں ہی برا تھا، شاید میری ہی کوئی کمی تھی جو آج ہم الگ ہیں 😭🥀
+                </p>
+            </div>
+        </div>
+
+        <!-- Live Love Counter with Stop & Reset Buttons -->
+        <div class="card bg-[#0a0a0a] border border-neutral-800 p-8 mb-10 text-center shadow-xl backdrop-blur">
+            <h2 class="cinzel-font text-2xl text-white mb-2 italic">Our Journey Together ⏳</h2>
+            <p class="font-serif italic text-gray-400 text-sm mb-6">Every second since 2021 remains etched in time ✨</p>
+            <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 mb-6">
+                <div class="bg-black border border-neutral-800 p-3 rounded-xl shadow-inner"><span id="years" class="cinzel-font text-2xl font-bold text-white">0</span><label class="block text-xs uppercase tracking-wider text-gray-500 mt-1">Years</label></div>
+                <div class="bg-black border border-neutral-800 p-3 rounded-xl shadow-inner"><span id="months" class="cinzel-font text-2xl font-bold text-white">0</span><label class="block text-xs uppercase tracking-wider text-gray-500 mt-1">Months</label></div>
+                <div class="bg-black border border-neutral-800 p-3 rounded-xl shadow-inner"><span id="days" class="cinzel-font text-2xl font-bold text-white">0</span><label class="block text-xs uppercase tracking-wider text-gray-500 mt-1">Days</label></div>
+                <div class="bg-black border border-neutral-800 p-3 rounded-xl shadow-inner"><span id="hours" class="cinzel-font text-2xl font-bold text-white">0</span><label class="block text-xs uppercase tracking-wider text-gray-500 mt-1">Hours</label></div>
+                <div class="bg-black border border-neutral-800 p-3 rounded-xl shadow-inner"><span id="minutes" class="cinzel-font text-2xl font-bold text-white">0</span><label class="block text-xs uppercase tracking-wider text-gray-500 mt-1">Mins</label></div>
+                <div class="bg-black border border-neutral-800 p-3 rounded-xl shadow-inner"><span id="seconds" class="cinzel-font text-2xl font-bold text-white">0</span><label class="block text-xs uppercase tracking-wider text-gray-500 mt-1">Secs</label></div>
+            </div>
+            <div class="flex justify-center gap-4">
+                <button class="btn btn-sm bg-neutral-800 text-white hover:bg-neutral-700 border-neutral-700" onclick="stopTimer()">⏹ Stop Timer</button>
+                <button class="btn btn-sm bg-neutral-800 text-white hover:bg-neutral-700 border-neutral-700" onclick="resetTimer()">🔄 Reset Timer</button>
+            </div>
+        </div>
+
+        <!-- GALLERY & MEMORIES -->
+        <div class="card bg-[#0a0a0a] border border-neutral-800 p-8 mb-10 shadow-xl backdrop-blur">
+            <h2 class="cinzel-font text-2xl text-white mb-6 text-center italic">Madiha Gallery & Memories 📸 😭</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Gallery Item 1 -->
+                <div class="bg-black rounded-2xl overflow-hidden border border-neutral-800 shadow-lg flex flex-col">
+                    <img src="pic1.jpeg" alt="Madiha Queen" class="w-full h-72 object-cover bg-neutral" onerror="this.src='https://via.placeholder.com/400x500?text=Madiha'">
+                    <div class="p-4 text-center font-serif italic text-gray-300 bg-[#0a0a0a] border-t border-neutral-900">My absolute queen ✨🖤 (Jo ab door hai)</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ROMANTIC SAD POETRY SECTION -->
+        <div class="card bg-[#0a0a0a] border border-neutral-800 p-8 mb-10 shadow-xl backdrop-blur">
+            <h2 class="cinzel-font text-2xl text-white mb-2 text-center italic">Yeh chand sher apka liya 🌹 😭</h2>
+            <div class="font-serif italic text-gray-400 text-center text-lg mb-8">Its for you Madiha g 🖤✨</div>
+            <div class="space-y-6 text-center">
+                <div class="urdu-font text-2xl text-gray-200 pb-4 border-b border-neutral-800">
+                    <span>تجھ سے بچھڑ کے جینا بھی کیا جینا ہوا،</span><br>
+                    <span>سانسیں تو چل رہی ہیں مگر دل کہیں کھو گیا ہے۔ 🖤 😭</span>
+                </div>
+                <div class="urdu-font text-2xl text-gray-200 pb-4 border-b border-neutral-800">
+                    <span>وہ جو ہر بات پہ قسمیں کھایا کرتا تھا،</span><br>
+                    <span>آج اسی شخص کو ہم سے بچھڑے زمانہ ہو گیا۔ 🥀</span>
+                </div>
+                <div class="urdu-font text-2xl text-gray-200 pb-4 border-b border-neutral-800">
+                    <span>محبت کی کتاب کے ورق جب الٹ کر دیکھے،</span><br>
+                    <span>تو تیری یاد کے آنسوؤں کے سوا کچھ نہ ملا۔ 🌧️ 😭</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Emotional Final Footer -->
+        <footer class="card bg-[#0a0a0a] border border-neutral-800 p-8 text-center shadow-2xl">
+            <div class="cinzel-font text-xl text-white mb-3 tracking-widest italic">
+                "جب کبھی کوئی پریشانی ہو یاد کرلینا..." 🖤 😭
+            </div>
+            <div class="text-gray-500 text-sm font-serif italic">
+                Dedicated forever to <span class="text-white font-bold">Madiha</span> by <span class="text-white font-bold">Abdul Hannan</span> 💍✨
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        /* Entry Passcode */
+        function checkPasscode() {
+            const codeInput = document.getElementById('passcode').value.trim();
+            const errorMsg = document.getElementById('errorMsg');
+            const curtainBox = document.getElementById('curtainBox');
+            const entryOverlay = document.getElementById('entryOverlay');
+            const bgAudio = document.getElementById('bgAudio');
+
+            if (codeInput.toLowerCase() === 'hubby') {
+                if(curtainBox) curtainBox.style.display = 'none';
+                document.getElementById('successGreeting').style.display = 'block';
+
+                bgAudio.play().catch(e => console.log("Audio play blocked:", e));
+
+                setTimeout(() => {
+                    entryOverlay.style.opacity = '0';
+                    setTimeout(() => entryOverlay.style.display = 'none', 1000);
+                }, 2000);
+            } else {
+                errorMsg.style.display = 'block';
+            }
+        }
+
+        /* Falling Black Petals / Stars Generator */
+        const petalsContainer = document.getElementById('fallingPetals');
+        const petalSymbols = ['🖤', '✨', '🥀', '😭', '🕊️'];
+        for (let i = 0; i < 30; i++) {
+            const petal = document.createElement('div');
+            petal.className = 'absolute -top-[10vh] text-xl select-none animate-[fall_linear_infinite] opacity-60';
+            petal.innerText = petalSymbols[Math.floor(Math.random() * petalSymbols.length)];
+            petal.style.left = `${Math.random() * 100}vw`;
+            petal.style.animationDuration = `${Math.random() * 5 + 5}s`;
+            petal.style.animationDelay = `${Math.random() * 5}s`;
+            petalsContainer.appendChild(petal);
+        }
+
+        /* Audio Player Toggle */
+        let isPlaying = true;
+        const bgAudio = document.getElementById('bgAudio');
+        const musicStatus = document.getElementById('musicStatus');
+        function toggleMusic() {
+            if (isPlaying) {
+                bgAudio.pause();
+                musicStatus.innerText = "Play Melody";
+                isPlaying = false;
+            } else {
+                bgAudio.play().then(() => {
+                    musicStatus.innerText = "Pause Melody";
+                    isPlaying = true;
+                }).catch(e => console.log(e));
+            }
+        }
+
+        /* Language Toggle */
+        let currentLang = 'eng';
+        function toggleLanguage() {
+            const engElements = document.querySelectorAll('.eng-version');
+            const urduElements = document.querySelectorAll('.urdu-version');
+            const langStatus = document.getElementById('langStatus');
+
+            if (currentLang === 'eng') {
+                engElements.forEach(el => el.classList.add('hidden'));
+                urduElements.forEach(el => el.classList.remove('hidden'));
+                langStatus.innerText = "English / اردو";
+                currentLang = 'urdu';
+            } else {
+                urduElements.forEach(el => el.classList.add('hidden'));
+                engElements.forEach(el => el.classList.remove('hidden'));
+                langStatus.innerText = "اردو / English";
+                currentLang = 'eng';
+            }
+        }
+
+        /* Live Counter with Stop & Reset */
+        const startDate = new Date('2021-11-21T00:00:00');
+        let timerInterval = setInterval(updateCounter, 1000);
+
+        function updateCounter() {
+            const now = new Date();
+            let diff = now - startDate;
+            let seconds = Math.floor(diff / 1000);
+            let minutes = Math.floor(seconds / 60);
+            let hours = Math.floor(minutes / 60);
+            let days = Math.floor(hours / 24);
+            let years = Math.floor(days / 365.25);
+            let months = Math.floor((days % 365.25) / 30.44);
+            let remDays = Math.floor((days % 365.25) % 30.44);
+
+            document.getElementById('years').innerText = years;
+            document.getElementById('months').innerText = months;
+            document.getElementById('days').innerText = remDays;
+            document.getElementById('hours').innerText = hours % 24;
+            document.getElementById('minutes').innerText = minutes % 60;
+            document.getElementById('seconds').innerText = seconds % 60;
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function resetTimer() {
+            clearInterval(timerInterval);
+            document.getElementById('years').innerText = "0";
+            document.getElementById('months').innerText = "0";
+            document.getElementById('days').innerText = "0";
+            document.getElementById('hours').innerText = "0";
+            document.getElementById('minutes').innerText = "0";
+            document.getElementById('seconds').innerText = "0";
+        }
+
+        /* Mystery Gift Unlock */
+        function unlockGift(num) {
+            document.getElementById('gift1Icon').style.display = 'none';
+            document.getElementById('gift1Title').style.display = 'none';
+            document.getElementById('gift1Btn').style.display = 'none';
+            document.getElementById('gift1Content').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
